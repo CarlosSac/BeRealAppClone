@@ -6,12 +6,17 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		81288BD92E8C761600DB6D54 /* ParseSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 81288BD82E8C761600DB6D54 /* ParseSwift */; };
+		81288BDC2E8C763A00DB6D54 /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 81288BDB2E8C763A00DB6D54 /* AlamofireImage */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		81288BBF2E8C6C2400DB6D54 /* BeRealAppClone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeRealAppClone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		81288BD12E8C6C2500DB6D54 /* Exceptions for "BeRealAppClone" folder in "BeRealAppClone" target */ = {
+		81288BE42E8C838100DB6D54 /* Exceptions for "BeRealAppClone" folder in "BeRealAppClone" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -24,7 +29,7 @@
 		81288BC12E8C6C2400DB6D54 /* BeRealAppClone */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				81288BD12E8C6C2500DB6D54 /* Exceptions for "BeRealAppClone" folder in "BeRealAppClone" target */,
+				81288BE42E8C838100DB6D54 /* Exceptions for "BeRealAppClone" folder in "BeRealAppClone" target */,
 			);
 			path = BeRealAppClone;
 			sourceTree = "<group>";
@@ -36,6 +41,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				81288BD92E8C761600DB6D54 /* ParseSwift in Frameworks */,
+				81288BDC2E8C763A00DB6D54 /* AlamofireImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +85,8 @@
 			);
 			name = BeRealAppClone;
 			packageProductDependencies = (
+				81288BD82E8C761600DB6D54 /* ParseSwift */,
+				81288BDB2E8C763A00DB6D54 /* AlamofireImage */,
 			);
 			productName = BeRealAppClone;
 			productReference = 81288BBF2E8C6C2400DB6D54 /* BeRealAppClone.app */;
@@ -107,6 +116,10 @@
 			);
 			mainGroup = 81288BB62E8C6C2400DB6D54;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				81288BD72E8C761600DB6D54 /* XCRemoteSwiftPackageReference "Parse-Swift" */,
+				81288BDA2E8C763A00DB6D54 /* XCRemoteSwiftPackageReference "AlamofireImage" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 81288BC02E8C6C2400DB6D54 /* Products */;
 			projectDirPath = "";
@@ -345,6 +358,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		81288BD72E8C761600DB6D54 /* XCRemoteSwiftPackageReference "Parse-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/parse-community/Parse-Swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.14.2;
+			};
+		};
+		81288BDA2E8C763A00DB6D54 /* XCRemoteSwiftPackageReference "AlamofireImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/AlamofireImage.git";
+			requirement = {
+				kind = exactVersion;
+				version = 4.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		81288BD82E8C761600DB6D54 /* ParseSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 81288BD72E8C761600DB6D54 /* XCRemoteSwiftPackageReference "Parse-Swift" */;
+			productName = ParseSwift;
+		};
+		81288BDB2E8C763A00DB6D54 /* AlamofireImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 81288BDA2E8C763A00DB6D54 /* XCRemoteSwiftPackageReference "AlamofireImage" */;
+			productName = AlamofireImage;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 81288BB72E8C6C2400DB6D54 /* Project object */;
 }
