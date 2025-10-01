@@ -4,7 +4,7 @@ Submitted by: **Carlos Sac**
 
 **BeReal** is an app that lets you take and upload pictures of your real life and experiences to share with your closest friends 
 
-Time spent: **7** hours spent in total
+Time spent: **8** hours spent in total
 
 ## Required Features
 
@@ -13,16 +13,16 @@ The following **required** functionality is completed:
 - [x] Users see an app icon in the home screen and a styled launch screen.
 - [x] User can register a new account
 - [x] User can log in with newly created account
-- [ ] App has a feed of posts when user logs in
-- [ ] User can upload a new post which takes in a picture from photo library and an optional caption	
-- [ ] User is able to logout	
+- [x] App has a feed of posts when user logs in
+- [x] User can upload a new post which takes in a picture from photo library and an optional caption	
+- [x] User is able to logout	
  
 The following **optional** features are implemented:
 
 - [ ] Users can pull to refresh their feed and see a loading indicator
 - [ ] Users can infinite-scroll in their feed to see past the 10 most recent photos
 - [ ] Users can see location and time of photo upload in the feed	
-- [ ] User stays logged in when app is closed and open again	
+- [x] User stays logged in when app is closed and open again	
 
 
 The following **additional** features are implemented:
