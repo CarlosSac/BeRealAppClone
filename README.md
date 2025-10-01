@@ -4,15 +4,15 @@ Submitted by: **Carlos Sac**
 
 **BeReal** is an app that lets you take and upload pictures of your real life and experiences to share with your closest friends 
 
-Time spent: **X** hours spent in total
+Time spent: **7** hours spent in total
 
 ## Required Features
 
 The following **required** functionality is completed:
 
-- [ ] Users see an app icon in the home screen and a styled launch screen.
-- [ ] User can register a new account
-- [ ] User can log in with newly created account
+- [x] Users see an app icon in the home screen and a styled launch screen.
+- [x] User can register a new account
+- [x] User can log in with newly created account
 - [ ] App has a feed of posts when user logs in
 - [ ] User can upload a new post which takes in a picture from photo library and an optional caption	
 - [ ] User is able to logout	
@@ -31,9 +31,7 @@ The following **additional** features are implemented:
 
 ## Video Walkthrough
 
-Here is a reminder on how to embed Loom videos on GitHub. Feel free to remove this reminder once you upload your README. 
-
-[Guide](https://www.youtube.com/watch?v=GA92eKlYio4).
+<img src='demo.gif' title='Video Walkthrough' width='350' alt='Video Walkthrough' />
 
 ## Notes
 
