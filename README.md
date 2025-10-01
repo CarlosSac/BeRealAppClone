@@ -31,7 +31,7 @@ The following **additional** features are implemented:
 
 ## Video Walkthrough
 
-<img src='demo.gif' title='Video Walkthrough' width='350' alt='Video Walkthrough' />
+<img src='demo2.gif' title='Video Walkthrough' width='350' alt='Video Walkthrough' />
 
 ## Notes
 
