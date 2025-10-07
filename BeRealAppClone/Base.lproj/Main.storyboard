@@ -325,31 +325,47 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Edg-ab-wXa">
-                                <rect key="frame" x="69" y="247" width="255" height="35"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Select Photo"/>
-                                <connections>
-                                    <action selector="onPickedImageTapped:" destination="Tny-SM-jzC" eventType="touchUpInside" id="UjA-eJ-s2f"/>
-                                </connections>
-                            </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kvr-R4-1td">
                                 <rect key="frame" x="33" y="290" width="326" height="326"/>
                             </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sZG-gZ-t3u">
+                                <rect key="frame" x="50" y="247.00000000000003" width="293" height="34.333333333333343"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Edg-ab-wXa">
+                                        <rect key="frame" x="0.0" y="0.0" width="143" height="34.333333333333336"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="filled" title="Select Photo"/>
+                                        <connections>
+                                            <action selector="onPickedImageTapped:" destination="Tny-SM-jzC" eventType="touchUpInside" id="UjA-eJ-s2f"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mk6-0Q-b2M">
+                                        <rect key="frame" x="143" y="0.0" width="41.333333333333343" height="34.333333333333336"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fD8-zx-sHI">
+                                        <rect key="frame" x="184.33333333333334" y="0.0" width="108.66666666666666" height="34.333333333333336"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="filled" title="Take Photo"/>
+                                    </button>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="ca1-SL-Nw4"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="ca1-SL-Nw4" firstAttribute="trailing" secondItem="Edg-ab-wXa" secondAttribute="trailing" constant="69" id="1lA-Jh-gKM"/>
+                            <constraint firstItem="sZG-gZ-t3u" firstAttribute="leading" secondItem="ca1-SL-Nw4" secondAttribute="leading" constant="50" id="19T-y5-VY9"/>
                             <constraint firstItem="ca1-SL-Nw4" firstAttribute="bottom" secondItem="kvr-R4-1td" secondAttribute="bottom" constant="168" id="6sj-cP-Xhm"/>
-                            <constraint firstItem="Edg-ab-wXa" firstAttribute="top" secondItem="rIY-HD-FHv" secondAttribute="bottom" constant="18" id="8W0-HH-2lZ"/>
                             <constraint firstItem="rIY-HD-FHv" firstAttribute="top" secondItem="ca1-SL-Nw4" secondAttribute="top" constant="23" id="C8d-1Z-KyD"/>
-                            <constraint firstItem="kvr-R4-1td" firstAttribute="top" secondItem="Edg-ab-wXa" secondAttribute="bottom" constant="8" symbolic="YES" id="K4U-G8-aT0"/>
-                            <constraint firstItem="Edg-ab-wXa" firstAttribute="leading" secondItem="ca1-SL-Nw4" secondAttribute="leading" constant="69" id="M2i-bk-Iqa"/>
+                            <constraint firstItem="sZG-gZ-t3u" firstAttribute="top" secondItem="rIY-HD-FHv" secondAttribute="bottom" constant="18" id="Ju4-lH-w43"/>
                             <constraint firstItem="rIY-HD-FHv" firstAttribute="leading" secondItem="ca1-SL-Nw4" secondAttribute="leading" constant="16" id="RyJ-h6-swQ"/>
                             <constraint firstItem="ca1-SL-Nw4" firstAttribute="trailing" secondItem="kvr-R4-1td" secondAttribute="trailing" constant="34" id="lFk-d1-HXX"/>
                             <constraint firstItem="kvr-R4-1td" firstAttribute="leading" secondItem="ca1-SL-Nw4" secondAttribute="leading" constant="33" id="lrg-th-jzJ"/>
                             <constraint firstItem="ca1-SL-Nw4" firstAttribute="trailing" secondItem="rIY-HD-FHv" secondAttribute="trailing" constant="16" id="mUO-CU-uh3"/>
+                            <constraint firstItem="ca1-SL-Nw4" firstAttribute="trailing" secondItem="sZG-gZ-t3u" secondAttribute="trailing" constant="50" id="oKV-cn-7LD"/>
+                            <constraint firstItem="kvr-R4-1td" firstAttribute="top" secondItem="sZG-gZ-t3u" secondAttribute="bottom" constant="8.6699999999999999" id="omq-FY-etb"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="44h-6O-gOG">
