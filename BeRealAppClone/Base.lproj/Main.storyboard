@@ -349,6 +349,9 @@
                                         <rect key="frame" x="184.33333333333334" y="0.0" width="108.66666666666666" height="34.333333333333336"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="filled" title="Take Photo"/>
+                                        <connections>
+                                            <action selector="onTakePhotoTapped:" destination="Tny-SM-jzC" eventType="touchUpInside" id="1nj-Ma-gYD"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
