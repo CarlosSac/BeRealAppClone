@@ -6,12 +6,9 @@
 //
 
 import UIKit
-
-// TODO: Import Photos UI
 import PhotosUI
-
-// TODO: Import Parse Swift
 import ParseSwift
+import MapKit
 
 class PostViewController: UIViewController {
 
@@ -21,6 +18,13 @@ class PostViewController: UIViewController {
     @IBOutlet weak var previewImageView: UIImageView!
 
     private var pickedImage: UIImage?
+    
+    // Location
+    private var pickedCity: String?
+    private var pickedState: String?
+    // default location (Apple HQ)
+    private let defaultCity = "Cupertino"
+    private let defaultState = "CA"
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,11 +52,8 @@ class PostViewController: UIViewController {
 
         // Present the picker
         present(picker, animated: true)
+    }
 
-    }
-    @IBAction func onPickedImageTapped1(_ sender: UIBarButtonItem) {
-        
-    }
 
     @IBAction func onTakePhotoTapped(_ sender: Any) {
         // Make sure the user's camera is available
@@ -78,6 +79,7 @@ class PostViewController: UIViewController {
         // Present the image picker (camera)
         present(imagePicker, animated: true)
     }
+    
     @IBAction func onShareTapped(_ sender: Any) {
 
         // Dismiss Keyboard
@@ -100,6 +102,9 @@ class PostViewController: UIViewController {
         // Set properties
         post.imageFile = imageFile
         post.caption = captionTextField.text
+        
+        post.city = pickedCity ?? defaultCity
+        post.state = pickedState ?? defaultState
 
         // Set the user as the current user
         post.user = User.current
@@ -136,7 +141,64 @@ class PostViewController: UIViewController {
         alertController.addAction(action)
         present(alertController, animated: true)
     }
+    
+    // Reverse geocode helper -> city, state
+    private func reverseGeocode(location: CLLocation, completion: @escaping (String?, String?) -> Void) {
+        CLGeocoder().reverseGeocodeLocation(location) { placemarks, error in
+            if let error = error {
+                print("❌ Geocoding error: \(error.localizedDescription)")
+                completion(nil, nil)
+                return
+            }
+
+            if let first = placemarks?.first {
+                print("📍 Geocoding success: \(first.locality ?? "nil"), \(first.administrativeArea ?? "nil")")
+                completion(first.locality, first.administrativeArea)
+            } else {
+                print("❌ No placemarks found")
+                completion(nil, nil)
+            }
+        }
+    }
+
+    // Extract GPS CLLocation from image Data using ImageIO (EXIF GPS)
+    private func gpsLocation(from imageData: Data) -> CLLocation? {
+        guard let source = CGImageSourceCreateWithData(imageData as CFData, nil),
+              let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any] else {
+            print("❌ Could not read image properties")
+            return nil
+        }
+
+        print("📍 Image properties keys: \(properties.keys)")
+
+        guard let gps = properties[kCGImagePropertyGPSDictionary] as? [CFString: Any] else {
+            print("❌ No GPS data in EXIF")
+            return nil
+        }
+
+        print("📍 GPS dictionary: \(gps)")
+
+        guard let latValue = gps[kCGImagePropertyGPSLatitude] as? Double,
+              let lonValue = gps[kCGImagePropertyGPSLongitude] as? Double else {
+            print("❌ Could not extract lat/lon values")
+            return nil
+        }
+
+        var latitude = latValue
+        var longitude = lonValue
+        if let latRef = gps[kCGImagePropertyGPSLatitudeRef] as? String, latRef == "S" {
+            latitude = -latitude
+        }
+        if let lonRef = gps[kCGImagePropertyGPSLongitudeRef] as? String, lonRef == "W" {
+            longitude = -longitude
+        }
+
+        let location = CLLocation(latitude: latitude, longitude: longitude)
+        print("📍 Extracted GPS from EXIF: lat \(latitude), lon \(longitude)")
+        return location
+    }
 }
+
 
 // TODO: Pt 1 - Add PHPickerViewController delegate and handle picked image.
 extension PostViewController: PHPickerViewControllerDelegate {
@@ -177,8 +239,50 @@ extension PostViewController: PHPickerViewControllerDelegate {
               }
            }
         }
+        
+
+        // Try to get the original image data with EXIF
+        if provider.hasItemConformingToTypeIdentifier("public.image") {
+            provider.loadDataRepresentation(forTypeIdentifier: "public.image") { [weak self] data, error in
+                guard let self = self, let imageData = data else {
+                    print("❌ Could not load image data")
+                    DispatchQueue.main.async {
+                        self?.pickedCity = self?.defaultCity
+                        self?.pickedState = self?.defaultState
+                        print("⚠️ No image data -> using default location")
+                    }
+                    return
+                }
+
+                print("📍 Got image data, checking for GPS...")
+                
+                if let gpsLocation = self.gpsLocation(from: imageData) {
+                    self.reverseGeocode(location: gpsLocation) { city, state in
+                        DispatchQueue.main.async {
+                            self.pickedCity = city ?? self.defaultCity
+                            self.pickedState = state ?? self.defaultState
+                            print("📍 Photo GPS -> city: \(self.pickedCity ?? self.defaultCity), state: \(self.pickedState ?? self.defaultState)")
+                        }
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        self.pickedCity = self.defaultCity
+                        self.pickedState = self.defaultState
+                        print("⚠️ No GPS in image -> using default location")
+                    }
+                }
+            }
+        } else {
+            // Fallback - no image data available
+            DispatchQueue.main.async {
+                self.pickedCity = self.defaultCity
+                self.pickedState = self.defaultState
+                print("⚠️ No image data type available -> using default location")
+            }
+        }
     }
 }
+
 extension PostViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         // Dismiss the image picker
@@ -196,5 +300,22 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
 
         // Set image to use when saving post
         pickedImage = image
+        
+        // Try to extract location from camera photo
+        if let imageData = image.jpegData(compressionQuality: 1.0),
+           let gpsLocation = gpsLocation(from: imageData) {
+            reverseGeocode(location: gpsLocation) { [weak self] city, state in
+                DispatchQueue.main.async {
+                    self?.pickedCity = city ?? self?.defaultCity
+                    self?.pickedState = state ?? self?.defaultState
+                    print("📍 Camera GPS -> city: \(self?.pickedCity ?? "Unknown"), state: \(self?.pickedState ?? "Unknown")")
+                }
+            }
+        } else {
+            // No GPS data, use default
+            pickedCity = defaultCity
+            pickedState = defaultState
+            print("📍 Camera photo -> using default location: \(pickedCity ?? defaultCity), state: \(pickedState ?? defaultState)")
+        }
     }
 }
