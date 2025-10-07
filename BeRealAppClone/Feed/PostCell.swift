@@ -1,4 +1,4 @@
-//
+
 //  PostCell.swift
 //  BeRealAppClone
 //
@@ -49,8 +49,9 @@ class PostCell: UITableViewCell {
         captionLabel.text = post.caption
 
         // Date
+        
         if let date = post.createdAt {
-            dateLabel.text = DateFormatter.postFormatter.string(from: date)
+            dateLabel.text = RelativeDateTimeFormatter.postRelativeFormatter.localizedString(for: date, relativeTo: Date())
         }
     }
 

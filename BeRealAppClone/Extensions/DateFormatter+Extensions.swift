@@ -13,3 +13,10 @@ extension DateFormatter {
         return formatter
     }()
 }
+extension RelativeDateTimeFormatter {
+    static let postRelativeFormatter: RelativeDateTimeFormatter = {
+        let formatter = RelativeDateTimeFormatter()
+        formatter.unitsStyle = .short
+        return formatter
+    }()
+}
