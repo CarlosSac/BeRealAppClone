@@ -20,11 +20,8 @@ class PostViewController: UIViewController {
     private var pickedImage: UIImage?
     
     // Location
-    private var pickedCity: String?
-    private var pickedState: String?
-    // default location (Apple HQ)
-    private let defaultCity = "Cupertino"
-    private let defaultState = "CA"
+    private var pickedLocation: String?
+    private let defaultLocation = "Cupertino, CA"
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -103,8 +100,7 @@ class PostViewController: UIViewController {
         post.imageFile = imageFile
         post.caption = captionTextField.text
         
-        post.city = pickedCity ?? defaultCity
-        post.state = pickedState ?? defaultState
+        post.location = pickedLocation ?? defaultLocation
 
         // Set the user as the current user
         post.user = User.current
@@ -142,21 +138,24 @@ class PostViewController: UIViewController {
         present(alertController, animated: true)
     }
     
-    // Reverse geocode helper -> city, state
-    private func reverseGeocode(location: CLLocation, completion: @escaping (String?, String?) -> Void) {
+    // Reverse geocode helper -> single location string
+    private func reverseGeocode(location: CLLocation, completion: @escaping (String?) -> Void) {
         CLGeocoder().reverseGeocodeLocation(location) { placemarks, error in
             if let error = error {
                 print("❌ Geocoding error: \(error.localizedDescription)")
-                completion(nil, nil)
+                completion(nil)
                 return
             }
 
             if let first = placemarks?.first {
-                print("📍 Geocoding success: \(first.locality ?? "nil"), \(first.administrativeArea ?? "nil")")
-                completion(first.locality, first.administrativeArea)
+                let city = first.locality ?? "Unknown City"
+                let state = first.administrativeArea ?? "Unknown State"
+                let locationString = "\(city), \(state)"
+                print("📍 Geocoding success: \(locationString)")
+                completion(locationString)
             } else {
                 print("❌ No placemarks found")
-                completion(nil, nil)
+                completion(nil)
             }
         }
     }
@@ -198,7 +197,6 @@ class PostViewController: UIViewController {
         return location
     }
 }
-
 
 // TODO: Pt 1 - Add PHPickerViewController delegate and handle picked image.
 extension PostViewController: PHPickerViewControllerDelegate {
@@ -247,9 +245,8 @@ extension PostViewController: PHPickerViewControllerDelegate {
                 guard let self = self, let imageData = data else {
                     print("❌ Could not load image data")
                     DispatchQueue.main.async {
-                        self?.pickedCity = self?.defaultCity
-                        self?.pickedState = self?.defaultState
-                        print("⚠️ No image data -> using default location")
+                        self?.pickedLocation = self?.defaultLocation
+                        print("⚠️ No image data -> using default location: \(self?.defaultLocation ?? "")")
                     }
                     return
                 }
@@ -257,27 +254,23 @@ extension PostViewController: PHPickerViewControllerDelegate {
                 print("📍 Got image data, checking for GPS...")
                 
                 if let gpsLocation = self.gpsLocation(from: imageData) {
-                    self.reverseGeocode(location: gpsLocation) { city, state in
+                    self.reverseGeocode(location: gpsLocation) { locationString in
                         DispatchQueue.main.async {
-                            self.pickedCity = city ?? self.defaultCity
-                            self.pickedState = state ?? self.defaultState
-                            print("📍 Photo GPS -> city: \(self.pickedCity ?? self.defaultCity), state: \(self.pickedState ?? self.defaultState)")
+                            self.pickedLocation = locationString ?? self.defaultLocation
+                            print("📍 Photo GPS -> location: \(self.pickedLocation ?? self.defaultLocation)")
                         }
                     }
                 } else {
                     DispatchQueue.main.async {
-                        self.pickedCity = self.defaultCity
-                        self.pickedState = self.defaultState
-                        print("⚠️ No GPS in image -> using default location")
+                        self.pickedLocation = self.defaultLocation
+                        print("⚠️ No GPS in image -> using default location: \(self.defaultLocation)")
                     }
                 }
             }
         } else {
-            // Fallback - no image data available
             DispatchQueue.main.async {
-                self.pickedCity = self.defaultCity
-                self.pickedState = self.defaultState
-                print("⚠️ No image data type available -> using default location")
+                self.pickedLocation = self.defaultLocation
+                print("⚠️ No image data type available -> using default location: \(self.defaultLocation)")
             }
         }
     }
@@ -304,18 +297,15 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
         // Try to extract location from camera photo
         if let imageData = image.jpegData(compressionQuality: 1.0),
            let gpsLocation = gpsLocation(from: imageData) {
-            reverseGeocode(location: gpsLocation) { [weak self] city, state in
+            reverseGeocode(location: gpsLocation) { [weak self] locationString in
                 DispatchQueue.main.async {
-                    self?.pickedCity = city ?? self?.defaultCity
-                    self?.pickedState = state ?? self?.defaultState
-                    print("📍 Camera GPS -> city: \(self?.pickedCity ?? "Unknown"), state: \(self?.pickedState ?? "Unknown")")
+                    self?.pickedLocation = locationString ?? self?.defaultLocation
+                    print("📍 Camera GPS -> location: \(self?.pickedLocation ?? self?.defaultLocation ?? "")")
                 }
             }
         } else {
-            // No GPS data, use default
-            pickedCity = defaultCity
-            pickedState = defaultState
-            print("📍 Camera photo -> using default location: \(pickedCity ?? defaultCity), state: \(pickedState ?? defaultState)")
+            pickedLocation = defaultLocation
+            print("📍 Camera photo -> using default location: \(defaultLocation)")
         }
     }
 }

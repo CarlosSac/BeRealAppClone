@@ -19,6 +19,7 @@ class PostCell: UITableViewCell {
 
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var captionLabel: UILabel!
+    @IBOutlet weak var locationLabel: UILabel!
     private var imageDataRequest: DataRequest?
 
     func configure(with post: Post) {
@@ -47,6 +48,8 @@ class PostCell: UITableViewCell {
 
         // Caption
         captionLabel.text = post.caption
+        
+        locationLabel.text = post.location ?? "Cupertino, CA"
 
         // Date
         

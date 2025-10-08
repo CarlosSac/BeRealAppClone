@@ -23,6 +23,5 @@ struct Post: ParseObject {
     var imageFile: ParseFile?
     var authorUsername: String?
     
-    var city: String?
-    var state: String?
+    var location: String?
 }
