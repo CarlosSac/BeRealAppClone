@@ -4,7 +4,7 @@ Submitted by: **Carlos Sac**
 
 **BeReal** is an app that lets you take and upload pictures of your real life and experiences to share with your closest friends 
 
-Time spent: **** hours spent in total
+Time spent: **10** hours spent in total
 
 ## Required Features
 
@@ -29,7 +29,7 @@ The following **additional** features are implemented:
 
 ## Video Walkthrough
 
-<img src='demo.gif' title='Video Walkthrough' width='350' alt='Video Walkthrough' />
+<img src='demo2.gif' title='Video Walkthrough' width='350' alt='Video Walkthrough' />
 
 ## Notes
 
