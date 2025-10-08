@@ -25,8 +25,18 @@ class FeedViewController: UIViewController {
 
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.allowsSelection = false
+        tableView.allowsSelection = true
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "DetailPostSegue",
+           let detailVC = segue.destination as? DetailPostViewController,
+           let indexPath = tableView.indexPathForSelectedRow {
+            let selectedPost = posts[indexPath.row]
+            detailVC.post = selectedPost
+        }
+    }
+
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -100,4 +110,9 @@ extension FeedViewController: UITableViewDataSource {
     }
 }
 
-extension FeedViewController: UITableViewDelegate { }
+extension FeedViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        //performSegue(withIdentifier: "DetailPostSegue", sender: nil)
+    }
+}
